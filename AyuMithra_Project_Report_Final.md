@@ -23,15 +23,14 @@ PDF EXPORT FORMATTING COMPLIANCE INSTRUCTIONS:
 
 \
 <p align="center"><b>By</b></p>
-<p align="center"><b>Yadala Krupa Samuel Dan (2451-23-750-047)</b></p>
-<p align="center"><b>N. Sharanya (2451-23-750-051)</b></p>
 <p align="center"><b>K.S. Swathi (2451-23-750-044)</b></p>
+<p align="center"><b>Y. Samuel Dan (2451-23-750-047)</b></p>
+<p align="center"><b>N. Sharanya (2451-23-750-051)</b></p>
 
 \
 <p align="center"><b>Under the guidance of</b></p>
 <p align="center"><b>N. Sandhya Rani</b></p>
-<p align="center"><b>Assistant Professor</b></p>
-<p align="center"><b>Department of CSE</b></p>
+<p align="center"><b>Assistant Professor, Dept. of CSE, MVSRC</b></p>
 
 \
 <p align="center">[Insert MVSR College Logo Here]</p>
@@ -41,7 +40,7 @@ PDF EXPORT FORMATTING COMPLIANCE INSTRUCTIONS:
 <p align="center"><b>Department of Computer Science and Engineering</b></p>
 <p align="center"><b>(Affiliated to Osmania University & Recognized by AICTE)</b></p>
 <p align="center"><b>Nadergul, Balapur Mandal, Hyderabad – 501 510</b></p>
-<p align="center"><b>Academic Year: 2024-2025</b></p>
+<p align="center"><b>Academic Year: 2025-2026</b></p>
 
 ---
 
@@ -56,43 +55,60 @@ PDF EXPORT FORMATTING COMPLIANCE INSTRUCTIONS:
 
 <p align="center"><b>CERTIFICATE</b></p>
 
-This is to certify that the Theme Based project work entitled **"AYUMITHRA - A MULTILINGUAL OFFLINE CONVERSATIONAL AI HEALTH CHATBOT"** is a bonafide work carried out by **Yadala Krupa Samuel Dan (2451-23-750-047), N. Sharanya (2451-23-750-051), and K.S. Swathi (2451-23-750-044)** in partial fulfilment of the requirements for the award of degree of **Bachelor of Engineering in Computer Science and Engineering**.
+This is to certify that the Theme Based project work entitled **"AYUMITHRA"** is a bonafide work carried out by **K.S. Swathi (2451-23-750-044), Y. Samuel Dan (2451-23-750-047), and N. Sharanya (2451-23-750-051)** in partial fulfilment of the requirements for the award of degree of **Bachelor of Engineering in Computer Science and Engineering** from **Maturi Venkata Subba Rao (MVSR) Engineering College**, affiliated to **OSMANIA UNIVERSITY**, Hyderabad, during the Academic Year **2025-2026**, under our guidance and supervision.
+
+The results embodied in this report have not been submitted to any other university or institute for the award of any degree or diploma.
 
 \
 \
-**Internal Guide**: N. Sandhya Rani, Assistant Professor  
+**Internal Guide**:  
+N. Sandhya Rani, Assistant Professor, Dept. of CSE, MVSRC  
 
 \
 \
-**Head of Department**: Dr. Rajesh Kulkarni  
+**Project Coordinators**:  
+1. N. Sandhya  
+2. K. Ascherya  
+3. Neeraj Sharma  
 
 \
 \
-**Principal**: Dr. Kameshwar Rao  
+**Head of Department**:  
+Dr. Rajesh Kulkarni, Professor & Head, Department of CSE (Allied)  
+
+\
+\
+**External Examiner**:  
 
 ---
 
 <p align="center"><b>DECLARATION</b></p>
 
-We declare that the Theme Based Project entitled **"AYUMITHRA - A MULTILINGUAL OFFLINE CONVERSATIONAL AI HEALTH CHATBOT"** is our original work and has not been submitted elsewhere.
+We declare that the Theme Based Project entitled **"AYUMITHRA"** is our original work and has not been submitted elsewhere. The reports are based on the work done entirely by us and not copied from any other source. The results embodied in this report have not been submitted to any other University or Institute for the award of any degree or diploma to the best of our knowledge and belief.
 
 \
 \
-* **Yadala Krupa Samuel Dan**  
-* **N. Sharanya**  
-* **K.S. Swathi**  
+* **K.S. Swathi (2451-23-750-044)**  
+* **Y. Samuel Dan (2451-23-750-047)**  
+* **N. Sharanya (2451-23-750-051)**  
 
 ---
 
 <p align="center"><b>ACKNOWLEDGEMENT</b></p>
 
-We express sincere gratitude to our guide **N. Sandhya Rani**, Assistant Professor, for valuable guidance throughout the project. We also thank **Dr. Kameshwar Rao**, Principal, and **Dr. Rajesh Kulkarni**, HOD (CSE-Allied), for support and infrastructure.
+We express sincere gratitude and indebtedness to our guide **N. Sandhya Rani**, Assistant Professor, for valuable suggestions and interest throughout the course of this project.
+
+We are also thankful to our principal **Dr. Marthi Kameswara Rao** and **Dr. Rajesh Kulkarni**, Professor and Head, Department of Computer Science and Engineering (Allied), MVSR Engineering College, Hyderabad, for providing excellent infrastructure and a nice atmosphere for completing this project successfully as a part of our B.E. Degree (CSE).
+
+We convey our heartfelt thanks to the lab staff for allowing us to use the required equipment whenever needed.
+
+Finally, we would like to take this opportunity to thank our family for their support through the work. We sincerely acknowledge and thank all those who gave directly or indirectly their support in completion of this work.
 
 \
 \
-* **Yadala Krupa Samuel Dan**  
-* **N. Sharanya**  
-* **K.S. Swathi**  
+* **K.S. Swathi (2451-23-750-044)**  
+* **Y. Samuel Dan (2451-23-750-047)**  
+* **N. Sharanya (2451-23-750-051)**  
 
 ---
 
@@ -136,64 +152,45 @@ At the end of the program the students (Engineering Graduates) will be able to:
 
 <p align="center"><b>COURSE CERTIFICATION</b></p>
 
-This section verifies that the project members have successfully completed the prerequisite certifications and specialized coursework from reputable platforms (such as NPTEL, Coursera, and IBM) to acquire the technical competencies required for the design, development, and optimization of AyuMithra.
+This section verifies that the project members have successfully completed the specialized course certifications from Infosys Springboard to acquire the technical competencies required for the design, development, and deployment of the AYUMITHRA project.
 
 ---
 
-<p align="center"><b>CERTIFICATE OF COMPLETION 1</b></p>
+<p align="center"><b>COURSE COMPLETION CERTIFICATE 1</b></p>
 
-* **Course Title**: Practical Machine Learning & Deep Learning with Python
-* **Offered By**: National Programme on Technology Enhanced Learning (NPTEL) / Coursera
-* **Awarded To**:
-  1. **Yadala Krupa Samuel Dan** (Credential ID: NPTEL-ML-2024-047)
-  2. **N. Sharanya** (Credential ID: NPTEL-ML-2024-051)
-  3. **K.S. Swathi** (Credential ID: NPTEL-ML-2024-044)
-* **Syllabus and Competency Covered**:
-  * Supervised learning algorithms: Linear/Logistic Regression, Naive Bayes Classifier, and Decision Trees.
-  * Model evaluation techniques: Precision, Recall, F1-Score, and Confusion Matrix.
-  * Serializing models using Python's `pickle` library for offline deployment.
+* **Course Title**: NLP for ML with Python: NLP Using Python & NLTK
+* **Offered By**: Infosys Springboard
+* **Awarded To**: **K.S. Swathi (2451-23-750-044)**
+* **Completion Date**: February 18, 2026
+* **Authorized Signatory**: Satheesha B. Nanjappa, Senior Vice President and Head, Education, Training and Assessment, Infosys Limited
 
 ---
 
-<p align="center"><b>CERTIFICATE OF COMPLETION 2</b></p>
+<p align="center"><b>COURSE COMPLETION CERTIFICATE 2</b></p>
 
-* **Course Title**: Web Application Development using Flask Framework
-* **Offered By**: IBM SkillsBuild / Coursera
-* **Awarded To**:
-  1. **Yadala Krupa Samuel Dan** (Credential ID: IBM-FLASK-2024-1047)
-  2. **N. Sharanya** (Credential ID: IBM-FLASK-2024-1051)
-  3. **K.S. Swathi** (Credential ID: IBM-FLASK-2024-1044)
-* **Syllabus and Competency Covered**:
-  * Designing WSGI web applications using Flask and routing requests.
-  * Integrating frontends with backend APIs using AJAX (Fetch API) and JSON.
-  * Managing session data and database interactions with SQLite.
+* **Course Title**: JavaScript: Getting Started with JavaScript Programming
+* **Offered By**: Infosys Springboard
+* **Awarded To**: **N. Sharanya (2451-23-750-051)**
+* **Completion Date**: February 18, 2026
+* **Authorized Signatory**: Satheesha B. Nanjappa, Senior Vice President and Head, Education, Training and Assessment, Infosys Limited
 
 ---
 
-<p align="center"><b>CERTIFICATE OF COMPLETION 3</b></p>
+<p align="center"><b>COURSE COMPLETION CERTIFICATE 3</b></p>
 
-* **Course Title**: Natural Language Processing: Transliteration & Sequence Modeling
-* **Offered By**: Stanford Online / DeepLearning.AI
-* **Awarded To**:
-  1. **Yadala Krupa Samuel Dan** (Credential ID: NLP-SEQ-2024-2047)
-  2. **N. Sharanya** (Credential ID: NLP-SEQ-2024-2051)
-  3. **K.S. Swathi** (Credential ID: NLP-SEQ-2024-2044)
-* **Syllabus and Competency Covered**:
-  * Text pre-processing: Tokenization, Stop-word removal, and Lemmatization.
-  * Phonetic mapping and Romanized-to-native language transliteration.
-  * Context-aware dialog management and offline heuristic translation mappings.
+* **Course Title**: Rest API with Flask and Python
+* **Offered By**: Infosys Springboard
+* **Awarded To**: **Y. Samuel Dan (2451-23-750-047)**
+* **Completion Date**: February 18, 2026
+* **Authorized Signatory**: Satheesha B. Nanjappa, Senior Vice President and Head, Education, Training and Assessment, Infosys Limited
 
 ---
 
 <p align="center"><b>ABSTRACT</b></p>
 
-The rise of digital health applications has significantly improved remote health diagnostics. However, most modern health chatbots rely heavily on external cloud APIs (like OpenAI, Hugging Face, or Google Cloud) for translation and classification. This introduces massive network latency, high rate-limit costs, and complete system failure under offline or low-connectivity scenarios.
+The AI-Driven Public Health Chatbot, **AYUMITHRA**, is a smart healthcare information system that helps people learn about diseases, symptoms, preventive measures, and vaccination schedules. It uses Artificial Intelligence (AI) and Natural Language Processing (NLP) to answer user queries in a simple and interactive way.
 
-**AyuMithra** solves this by establishing a **local-first, fully offline, multilingual conversational health chatbot**. The system integrates a Relational SQLite Database with a Multinomial Naive Bayes (MNB) machine learning model trained on symptom vectors. AyuMithra features a dual-layered semantic parser: a standard BERT classifier (if online) and a combination-aware pattern matching heuristic rule engine (if offline). 
-
-To overcome translation failures offline, AyuMithra implements a custom Romanized-to-English transliterator (correcting phonetic inputs like *"talanoppi"* $\rightarrow$ *"headache"*) and embeds custom-curated, medical-grade offline dictionaries in **Hindi** and **Telugu** for its disease records. 
-
-Empathetical, context-aware memory tracks conversational history, enabling users to ask follow-up questions naturally (e.g. *"what are the precautions for it?"*). The system has been validated to work seamlessly with 100% offline accuracy, making it ideal for rural health camps, low-connectivity zones, and private local clinics.
+The chatbot provides reliable health information in multiple languages, making it accessible to people from different regions. The system runs on a local web-based client-server architecture, enabling offline-first execution to resolve access challenges in low-connectivity areas. The system aims to increase public health awareness, reduce misinformation, and improve access to healthcare information quickly and efficiently.
 
 ---
 

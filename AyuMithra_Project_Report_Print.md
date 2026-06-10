@@ -152,64 +152,45 @@ At the end of the program the students (Engineering Graduates) will be able to:
 
 <p align="center"><b>COURSE CERTIFICATION</b></p>
 
-This section verifies that the project members have successfully completed the prerequisite certifications and specialized coursework from reputable platforms (such as NPTEL, Coursera, and IBM) to acquire the technical competencies required for the design, development, and optimization of AyuMithra.
+This section verifies that the project members have successfully completed the specialized course certifications from Infosys Springboard to acquire the technical competencies required for the design, development, and deployment of the AYUMITHRA project.
 
 ---
 
-<p align="center"><b>CERTIFICATE OF COMPLETION 1</b></p>
+<p align="center"><b>COURSE COMPLETION CERTIFICATE 1</b></p>
 
-* **Course Title**: Practical Machine Learning & Deep Learning with Python
-* **Offered By**: National Programme on Technology Enhanced Learning (NPTEL) / Coursera
-* **Awarded To**:
-  1. **Yadala Krupa Samuel Dan** (Credential ID: NPTEL-ML-2024-047)
-  2. **N. Sharanya** (Credential ID: NPTEL-ML-2024-051)
-  3. **K.S. Swathi** (Credential ID: NPTEL-ML-2024-044)
-* **Syllabus and Competency Covered**:
-  * Supervised learning algorithms: Linear/Logistic Regression, Naive Bayes Classifier, and Decision Trees.
-  * Model evaluation techniques: Precision, Recall, F1-Score, and Confusion Matrix.
-  * Serializing models using Python's `pickle` library for offline deployment.
+* **Course Title**: NLP for ML with Python: NLP Using Python & NLTK
+* **Offered By**: Infosys Springboard
+* **Awarded To**: **K.S. Swathi (2451-23-750-044)**
+* **Completion Date**: February 18, 2026
+* **Authorized Signatory**: Satheesha B. Nanjappa, Senior Vice President and Head, Education, Training and Assessment, Infosys Limited
 
 ---
 
-<p align="center"><b>CERTIFICATE OF COMPLETION 2</b></p>
+<p align="center"><b>COURSE COMPLETION CERTIFICATE 2</b></p>
 
-* **Course Title**: Web Application Development using Flask Framework
-* **Offered By**: IBM SkillsBuild / Coursera
-* **Awarded To**:
-  1. **Yadala Krupa Samuel Dan** (Credential ID: IBM-FLASK-2024-1047)
-  2. **N. Sharanya** (Credential ID: IBM-FLASK-2024-1051)
-  3. **K.S. Swathi** (Credential ID: IBM-FLASK-2024-1044)
-* **Syllabus and Competency Covered**:
-  * Designing WSGI web applications using Flask and routing requests.
-  * Integrating frontends with backend APIs using AJAX (Fetch API) and JSON.
-  * Managing session data and database interactions with SQLite.
+* **Course Title**: JavaScript: Getting Started with JavaScript Programming
+* **Offered By**: Infosys Springboard
+* **Awarded To**: **N. Sharanya (2451-23-750-051)**
+* **Completion Date**: February 18, 2026
+* **Authorized Signatory**: Satheesha B. Nanjappa, Senior Vice President and Head, Education, Training and Assessment, Infosys Limited
 
 ---
 
-<p align="center"><b>CERTIFICATE OF COMPLETION 3</b></p>
+<p align="center"><b>COURSE COMPLETION CERTIFICATE 3</b></p>
 
-* **Course Title**: Natural Language Processing: Transliteration & Sequence Modeling
-* **Offered By**: Stanford Online / DeepLearning.AI
-* **Awarded To**:
-  1. **Yadala Krupa Samuel Dan** (Credential ID: NLP-SEQ-2024-2047)
-  2. **N. Sharanya** (Credential ID: NLP-SEQ-2024-2051)
-  3. **K.S. Swathi** (Credential ID: NLP-SEQ-2024-2044)
-* **Syllabus and Competency Covered**:
-  * Text pre-processing: Tokenization, Stop-word removal, and Lemmatization.
-  * Phonetic mapping and Romanized-to-native language transliteration.
-  * Context-aware dialog management and offline heuristic translation mappings.
+* **Course Title**: Rest API with Flask and Python
+* **Offered By**: Infosys Springboard
+* **Awarded To**: **Y. Samuel Dan (2451-23-750-047)**
+* **Completion Date**: February 18, 2026
+* **Authorized Signatory**: Satheesha B. Nanjappa, Senior Vice President and Head, Education, Training and Assessment, Infosys Limited
 
 ---
 
 <p align="center"><b>ABSTRACT</b></p>
 
-The rise of digital health applications has significantly improved remote health diagnostics. However, most modern health chatbots rely heavily on external cloud APIs (like OpenAI, Hugging Face, or Google Cloud) for translation and classification. This introduces massive network latency, high rate-limit costs, and complete system failure under offline or low-connectivity scenarios.
+The AI-Driven Public Health Chatbot, **AYUMITHRA**, is a smart healthcare information system that helps people learn about diseases, symptoms, preventive measures, and vaccination schedules. It uses Artificial Intelligence (AI) and Natural Language Processing (NLP) to answer user queries in a simple and interactive way.
 
-**AyuMithra** solves this by establishing a **local-first, fully offline, multilingual conversational health chatbot**. The system integrates a Relational SQLite Database with a Multinomial Naive Bayes (MNB) machine learning model trained on symptom vectors. AyuMithra features a dual-layered semantic parser: a standard BERT classifier (if online) and a combination-aware pattern matching heuristic rule engine (if offline). 
-
-To overcome translation failures offline, AyuMithra implements a custom Romanized-to-English transliterator (correcting phonetic inputs like *"talanoppi"* $\rightarrow$ *"headache"*) and embeds custom-curated, medical-grade offline dictionaries in **Hindi** and **Telugu** for its disease records. 
-
-Empathetical, context-aware memory tracks conversational history, enabling users to ask follow-up questions naturally (e.g. *"what are the precautions for it?"*). The system has been validated to work seamlessly with 100% offline accuracy, making it ideal for rural health camps, low-connectivity zones, and private local clinics.
+The chatbot provides reliable health information in multiple languages, making it accessible to people from different regions. The system runs on a local web-based client-server architecture, enabling offline-first execution to resolve access challenges in low-connectivity areas. The system aims to increase public health awareness, reduce misinformation, and improve access to healthcare information quickly and efficiently.
 
 ---
 
