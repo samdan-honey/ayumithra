@@ -53,6 +53,17 @@ def init_database():
         )
     ''')
     
+    cursor.execute('''
+        CREATE TABLE chat_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL,
+            role TEXT NOT NULL,
+            content TEXT NOT NULL,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (username) REFERENCES users(username)
+        )
+    ''')
+    
     # Hash default password "admin123" using SHA-256
     import hashlib
     default_password_hash = hashlib.sha256(b"admin123").hexdigest()

@@ -438,6 +438,9 @@
                 <button class="quick-symptom-btn" onclick="clearSelectedSymptoms()" style="margin-top: 8px;">
                     ❌ Clear All
                 </button>
+                <button class="quick-symptom-btn" onclick="clearChatHistoryServer()" style="margin-top: 8px;">
+                    🗑️ Clear Chat History
+                </button>
 
                 <h3 style="margin-top: 25px;">Languages</h3>
                 <div class="quick-symptoms">
@@ -662,7 +665,7 @@
             document.getElementById('typingIndicator').classList.remove('active');
         }
 
-        function addMessage(text, isUser) {
+        function addMessageToUI(text, isUser) {
             const messagesContainer = document.getElementById('chatMessages');
             
             // Hide welcome screen on first message
@@ -683,9 +686,61 @@
             
             messagesContainer.appendChild(messageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            
+        }
+
+        function addMessage(text, isUser) {
+            addMessageToUI(text, isUser);
             // Track conversation history
             chatHistory.push({ role: isUser ? 'user' : 'assistant', content: text });
+        }
+
+        async function loadChatHistory() {
+            try {
+                const response = await fetch('/chat/history');
+                const data = await response.json();
+                
+                if (data.success && data.history && data.history.length > 0) {
+                    // Hide welcome screen
+                    const welcomeScreen = document.getElementById('welcomeScreen');
+                    if (welcomeScreen) {
+                        welcomeScreen.style.display = 'none';
+                    }
+                    
+                    data.history.forEach(msg => {
+                        const isUser = (msg.role === 'user');
+                        const formattedText = msg.content.replace(/\n/g, '<br>');
+                        addMessageToUI(formattedText, isUser);
+                        
+                        // Populate local history array for RAG/BERT context
+                        chatHistory.push({ role: msg.role, content: msg.content });
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading chat history:', error);
+            }
+        }
+
+        async function clearChatHistoryServer() {
+            if (!confirm('Are you sure you want to clear your chat history? This cannot be undone.')) {
+                return;
+            }
+            try {
+                const response = await fetch('/chat/history/clear', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert('Failed to clear chat history: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error clearing chat history:', error);
+                alert('Error connecting to the server to clear history.');
+            }
         }
 
         async function sendMessage() {
@@ -694,8 +749,8 @@
             
             if (!message) return;
             
-            // Add user message
-            addMessage(message, true);
+            // Add user message to UI (without manually pushing to chatHistory yet, as the backend will return the saved response and keep it in sync)
+            addMessageToUI(message, true);
             input.value = '';
             
             // Show typing indicator
@@ -709,8 +764,7 @@
                     },
                     body: JSON.stringify({
                         message: message,
-                        language: currentLanguage,
-                        history: chatHistory.slice(-5) // Send last 5 messages for context
+                        language: currentLanguage
                     })
                 });
                 
@@ -719,25 +773,32 @@
                 hideTyping();
                 
                 if (data.success) {
+                    // Sync local memory context array with new user message and response
+                    chatHistory.push({ role: 'user', content: message });
+                    chatHistory.push({ role: 'assistant', content: data.response });
+                    
                     // Format response with line breaks
                     const formattedResponse = data.response.replace(/\n/g, '<br>');
-                    addMessage(formattedResponse, false);
+                    addMessageToUI(formattedResponse, false);
                     
                     // Log symptoms detected for debugging
                     if (data.symptoms_detected && data.symptoms_detected.length > 0) {
                         console.log('Detected symptoms:', data.symptoms_detected);
                     }
                 } else {
-                    addMessage('Sorry, I encountered an error. Please try again.', false);
+                    addMessageToUI('Sorry, I encountered an error. Please try again.', false);
                 }
             } catch (error) {
                 hideTyping();
-                addMessage('Sorry, I\'m having trouble connecting. Please try again.', false);
+                addMessageToUI('Sorry, I\'m having trouble connecting. Please try again.', false);
             }
         }
 
         // Set initial language
         changeLanguage(currentLanguage);
+
+        // Load chat history from server on page load
+        loadChatHistory();
     </script>
 </body>
 </html>

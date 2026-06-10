@@ -297,14 +297,48 @@ conversation_state = {}
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    """Process chat messages with Hugging Face AI and symptom extraction"""
+    """Process chat messages with Hugging Face AI and symptom extraction, persisting history to SQLite"""
+    if not is_logged_in():
+        return jsonify({
+            'success': False,
+            'error': 'Unauthorized. Please login.'
+        }), 401
+
     try:
         data = request.get_json()
         message = data.get('message', '')
         language = data.get('language', 'en-US')
-        history = data.get('history', [])
         
-        # Get or create conversation state (using session-like approach)
+        username = session['username']
+        
+        # 1. Save user's incoming message to database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO chat_history (username, role, content)
+            VALUES (?, ?, ?)
+        ''', (username, 'user', message))
+        conn.commit()
+        conn.close()
+        
+        # 2. Retrieve recent history for AI context (excluding current user message)
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT role, content FROM chat_history 
+            WHERE username = ? 
+            ORDER BY id DESC LIMIT 6
+        ''', (username,))
+        rows = cursor.fetchall()
+        conn.close()
+        
+        # The first row (rows[0]) is the user message we just inserted.
+        # We want the 5 rows prior to it (rows[1:6]) for context.
+        db_history = []
+        if len(rows) > 1:
+            db_history = [{'role': row['role'], 'content': row['content']} for row in rows[1:6]]
+            db_history.reverse()  # Sort chronologically for HF service
+        
         # Extract symptoms from ALL conversation history, not just current message
         all_detected_symptoms = set()
         
@@ -321,8 +355,8 @@ def chat():
         current_symptoms = extract_symptoms_from_text(english_message.lower())
         all_detected_symptoms.update(current_symptoms)
         
-        # Also extract symptoms from conversation history (last 5 messages)
-        for msg in history[-5:]:
+        # Also extract symptoms from recent history
+        for msg in db_history:
             if msg.get('role') == 'user':
                 hist_msg = msg.get('content', '')
                 hist_lang = detect_language(hist_msg)
@@ -340,7 +374,17 @@ def chat():
         detected_symptoms = list(all_detected_symptoms)
         
         # Generate AI-powered response using Hugging Face
-        response = generate_health_response(message, detected_symptoms, language, history)
+        response = generate_health_response(message, detected_symptoms, language, db_history)
+        
+        # 3. Save generated response to database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO chat_history (username, role, content)
+            VALUES (?, ?, ?)
+        ''', (username, 'assistant', response))
+        conn.commit()
+        conn.close()
         
         return jsonify({
             'success': True,
@@ -351,6 +395,72 @@ def chat():
             'translated_message': english_message if detected_lang != 'en' else None
         })
         
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/chat/history', methods=['GET'])
+def get_chat_history():
+    """Retrieve chat history for the logged-in user"""
+    if not is_logged_in():
+        return jsonify({
+            'success': False,
+            'error': 'Unauthorized. Please login.'
+        }), 401
+        
+    try:
+        username = session['username']
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT role, content, timestamp FROM chat_history 
+            WHERE username = ? 
+            ORDER BY id ASC
+        ''', (username,))
+        rows = cursor.fetchall()
+        conn.close()
+        
+        history = [{
+            'role': row['role'],
+            'content': row['content'],
+            'timestamp': row['timestamp']
+        } for row in rows]
+        
+        return jsonify({
+            'success': True,
+            'history': history
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/chat/history/clear', methods=['POST'])
+def clear_chat_history():
+    """Clear chat history for the logged-in user"""
+    if not is_logged_in():
+        return jsonify({
+            'success': False,
+            'error': 'Unauthorized. Please login.'
+        }), 401
+        
+    try:
+        username = session['username']
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM chat_history WHERE username = ?', (username,))
+        conn.commit()
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Chat history cleared successfully'
+        })
     except Exception as e:
         return jsonify({
             'success': False,
@@ -638,12 +748,36 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
 
+def check_db_tables():
+    """Ensure all required tables (like chat_history) exist in the database"""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS chat_history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                role TEXT NOT NULL,
+                content TEXT NOT NULL,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (username) REFERENCES users(username)
+            )
+        ''')
+        conn.commit()
+        conn.close()
+        print("[OK] Chat history table verified/created")
+    except Exception as e:
+        print(f"[ERROR] Failed to verify/create tables: {e}")
+
 if __name__ == '__main__':
     # Initialize database if not exists
     if not os.path.exists('database/health_app.db'):
         print("Initializing database...")
         from init_database import init_database
         init_database()
+    
+    # Verify/create tables
+    check_db_tables()
     
     # Load ML model
     if load_model():
