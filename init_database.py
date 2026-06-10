@@ -44,6 +44,22 @@ def init_database():
             PRIMARY KEY (disease_id, symptom_id)
         )
     ''')
+    
+    cursor.execute('''
+        CREATE TABLE users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL
+        )
+    ''')
+    
+    # Hash default password "admin123" using SHA-256
+    import hashlib
+    default_password_hash = hashlib.sha256(b"admin123").hexdigest()
+    cursor.execute('''
+        INSERT OR IGNORE INTO users (username, password)
+        VALUES (?, ?)
+    ''', ('admin', default_password_hash))
    
     # Insert diseases
     diseases_data = [
@@ -148,10 +164,10 @@ def init_database():
     conn.commit()
     conn.close()
    
-    print("✓ Database initialized successfully!")
-    print(f"✓ Created {len(diseases_data)} diseases")
-    print(f"✓ Created {len(symptoms_list)} symptoms")
-    print(f"✓ Created {len(all_mappings)} disease-symptom mappings")
+    print("Database initialized successfully!")
+    print(f"Created {len(diseases_data)} diseases")
+    print(f"Created {len(symptoms_list)} symptoms")
+    print(f"Created {len(all_mappings)} disease-symptom mappings")
 
 if __name__ == '__main__':
     init_database()

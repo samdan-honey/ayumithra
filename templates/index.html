@@ -42,6 +42,10 @@
                         </div>
                     </div>
                 </div>
+                {% if session.get('username') %}
+                <span class="nav-link" style="color: #94a3b8; pointer-events: none; margin-left: 15px;">Welcome, {{ session['username'] }}</span>
+                <a href="/logout" class="nav-link" style="color: #ef4444; margin-left: 10px;">Logout</a>
+                {% endif %}
             </div>
             
             <!-- Language Switcher -->

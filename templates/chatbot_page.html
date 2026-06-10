@@ -415,6 +415,12 @@
             <div class="language-indicator">
                 <span id="currentLang">EN</span>
             </div>
+            {% if session.get('username') %}
+            <div style="position: absolute; top: 10px; right: 80px; z-index: 10;">
+                <span style="font-size: 12px; opacity: 0.9; margin-right: 10px;">Welcome, {{ session['username'] }}</span>
+                <a href="/logout" style="color: #ffcccc; font-size: 12px; font-weight: bold; text-decoration: none;">Logout</a>
+            </div>
+            {% endif %}
         </header>
 
         <!-- Main Chat Area -->

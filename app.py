@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import sqlite3
 import pickle
 import numpy as np
 import os
+import hashlib
 from huggingface_service import (
     translate_text, detect_language, transliterate_to_english,
     generate_health_response, detect_symptoms_with_bert
@@ -10,6 +11,12 @@ from huggingface_service import (
 from speech_service import transcribe_audio
 
 app = Flask(__name__)
+app.secret_key = 'ayumithra_secure_offline_secret_key'
+
+def is_logged_in():
+    """Helper to check if user is logged in"""
+    return 'username' in session
+
 
 # Load the ML model
 model_data = None
@@ -63,6 +70,9 @@ def get_disease_info(disease_name):
 @app.route('/')
 def index():
     """Render the main page with symptoms"""
+    if not is_logged_in():
+        return redirect(url_for('login'))
+        
     if not symptoms_list:
         return "Model not loaded. Please run train_model.py first.", 500
     
@@ -350,6 +360,8 @@ def chat():
 @app.route('/chatbot')
 def chatbot_page():
     """Full-page chatbot interface"""
+    if not is_logged_in():
+        return redirect(url_for('login'))
     return render_template('chatbot_page.html')
 
 @app.route('/test', methods=['GET'])
@@ -552,6 +564,79 @@ def generate_chat_response(message, symptoms, language, history):
         return lang_responses['medical_advice']
     
     return lang_responses['default']
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """Sign in page and logic"""
+    if is_logged_in():
+        return redirect(url_for('index'))
+        
+    error = None
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        # Hash password using SHA-256
+        password_hash = hashlib.sha256(password.encode()).hexdigest()
+        
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password_hash))
+            user = cursor.fetchone()
+            conn.close()
+            
+            if user:
+                session['username'] = username
+                return redirect(url_for('index'))
+            else:
+                error = 'Invalid username or password'
+        except Exception as e:
+            error = f'Database error: {str(e)}'
+            
+    return render_template('login.html', error=error)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """Registration page and logic"""
+    if is_logged_in():
+        return redirect(url_for('index'))
+        
+    error = None
+    success = None
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+        
+        if len(password) < 6:
+            error = 'Password must be at least 6 characters long'
+        elif password != confirm_password:
+            error = 'Passwords do not match'
+        else:
+            # Hash password using SHA-256
+            password_hash = hashlib.sha256(password.encode()).hexdigest()
+            
+            try:
+                conn = get_db_connection()
+                cursor = conn.cursor()
+                cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, password_hash))
+                conn.commit()
+                conn.close()
+                success = 'Registration successful! Please sign in.'
+                return render_template('login.html', success=success)
+            except sqlite3.IntegrityError:
+                error = 'Username already exists'
+            except Exception as e:
+                error = f'Registration error: {str(e)}'
+                
+    return render_template('register.html', error=error)
+
+@app.route('/logout')
+def logout():
+    """Logout current user session"""
+    session.pop('username', None)
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     # Initialize database if not exists
