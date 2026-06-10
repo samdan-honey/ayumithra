@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ disease.name }} - AyuMithra</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <span class="icon icon-hospital"></span>
+                <span>AyuMithra</span>
+            </a>
+            
+            <div class="nav-menu">
+                <a href="/" class="nav-link" data-translate="symptom_checker">Symptom Checker</a>
+                
+                <!-- Disease Dropdown -->
+                <div class="dropdown">
+                    <button class="dropdown-toggle" id="diseaseDropdownBtn">
+                        <span class="icon icon-list"></span>
+                        <span data-translate="diseases">Diseases</span>
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="diseaseDropdown">
+                        <div class="dropdown-search">
+                            <span class="search-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.3-4.3"></path>
+                                </svg>
+                            </span>
+                            <input type="text" id="diseaseSearch" data-translate-placeholder="search_diseases" placeholder="Search diseases...">
+                        </div>
+                        <div class="dropdown-items" id="diseaseDropdownItems">
+                            <!-- Diseases will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Language Switcher -->
+            <div class="language-switcher">
+                <button class="lang-btn" id="langBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                    <span id="currentLang">EN</span>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <button class="lang-option" data-lang="en">English</button>
+                    <button class="lang-option" data-lang="hi">हिंदी (Hindi)</button>
+                    <button class="lang-option" data-lang="te">తెలుగు (Telugu)</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="disease-detail-page">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb">
+                <a href="/">Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">{{ disease.name }}</span>
+            </nav>
+
+            <!-- Disease Header -->
+            <header class="disease-header">
+                <div class="disease-title-section">
+                    <h1 class="disease-name" data-english-name="{{ disease.name }}">{{ disease.name }}</h1>
+                    <span class="severity-badge severity-{{ disease.severity_level.lower() }}" data-severity="{{ disease.severity_level }}">
+                        {{ disease.severity_level }} Severity
+                    </span>
+                </div>
+            </header>
+
+            <main class="disease-content">
+                <!-- Quick Info Cards -->
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="info-card-icon">
+                            <span class="icon icon-description"></span>
+                        </div>
+                        <div class="info-card-content">
+                            <h3 data-translate="description">Description</h3>
+                            <p class="disease-description" data-english-desc="{{ disease.name }}">{{ disease.description }}</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-card-icon">
+                            <span class="icon icon-shield"></span>
+                        </div>
+                        <div class="info-card-content">
+                            <h3 data-translate="precautions">Precautions</h3>
+                            <p>{{ disease.precautions }}</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-card-icon">
+                            <span class="icon icon-lightbulb"></span>
+                        </div>
+                        <div class="info-card-content">
+                            <h3 data-translate="recommended_action">Recommended Action</h3>
+                            <p>{{ disease.recommended_action }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Associated Symptoms -->
+                <div class="symptoms-section">
+                    <h2>
+                        <span class="icon icon-activity"></span>
+                        <span data-translate="associated_symptoms">Associated Symptoms</span>
+                    </h2>
+                    <div class="symptoms-tags">
+                        {% for symptom in disease.symptoms %}
+                        <span class="symptom-tag">{{ symptom }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-section">
+                    <a href="/" class="btn-primary">
+                        <span class="icon icon-search"></span>
+                        Check Symptoms for This Disease
+                    </a>
+                </div>
+
+                <!-- Disclaimer -->
+                <div class="disclaimer">
+                    <p>
+                        <strong><span class="icon icon-alert"></span> Important Disclaimer:</strong>
+                        This information is for educational purposes only and should not be considered as medical advice. 
+                        Always consult a qualified healthcare professional for proper diagnosis and treatment.
+                    </p>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 AyuMithra. Care that speaks your language.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/icons.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

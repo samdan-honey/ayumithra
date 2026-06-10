@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyuMithra - Care That Speaks Your Language</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+        <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <span class="icon icon-hospital"></span>
+                <span>AyuMithra</span>
+            </a>
+            
+            <div class="nav-menu">
+                <a href="/" class="nav-link active" data-translate="symptom_checker">Symptom Checker</a>
+                
+                <!-- Disease Dropdown -->
+                <div class="dropdown">
+                    <button class="dropdown-toggle" id="diseaseDropdownBtn">
+                        <span class="icon icon-list"></span>
+                        <span data-translate="diseases">Diseases</span>
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="diseaseDropdown">
+                        <div class="dropdown-search">
+                            <span class="search-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.3-4.3"></path>
+                                </svg>
+                            </span>
+                            <input type="text" id="diseaseSearch" data-translate-placeholder="search_diseases" placeholder="Search diseases...">
+                        </div>
+                        <div class="dropdown-items" id="diseaseDropdownItems">
+                            <!-- Diseases will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Language Switcher -->
+            <div class="language-switcher">
+                <button class="lang-btn" id="langBtn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                    <span id="currentLang">EN</span>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <button class="lang-option" data-lang="en">English</button>
+                    <button class="lang-option" data-lang="hi">हिंदी (Hindi)</button>
+                    <button class="lang-option" data-lang="te">తెలుగు (Telugu)</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <!-- AyuMithra Logo SVG -->
+                <svg class="ayumithra-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Background circle -->
+                    <circle cx="100" cy="100" r="90" fill="white" opacity="0.1"/>
+                    
+                    <!-- M shape composed of colorful strokes -->
+                    <!-- Left vertical stroke - Orange/Red gradient -->
+                    <path d="M60 140 L60 80 Q60 60 75 65 L85 70" 
+                          stroke="url(#orangeGradient)" stroke-width="12" fill="none" stroke-linecap="round"/>
+                    
+                    <!-- Right vertical stroke - Green/Teal gradient -->
+                    <path d="M140 140 L140 80 Q140 60 125 65 L115 70" 
+                          stroke="url(#greenGradient)" stroke-width="12" fill="none" stroke-linecap="round"/>
+                    
+                    <!-- Middle diagonal - Red crossing -->
+                    <path d="M75 65 L125 115" 
+                          stroke="#E53935" stroke-width="10" fill="none" stroke-linecap="round"/>
+                    
+                    <!-- Cross stroke - Teal -->
+                    <path d="M85 115 L115 85" 
+                          stroke="#00BCD4" stroke-width="10" fill="none" stroke-linecap="round"/>
+                    
+                    <!-- Gradients -->
+                    <defs>
+                        <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#FF9800"/>
+                            <stop offset="100%" style="stop-color:#F44336"/>
+                        </linearGradient>
+                        <linearGradient id="greenGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4CAF50"/>
+                            <stop offset="100%" style="stop-color:#009688"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1>AyuMithra</h1>
+            </div>
+            <p class="subtitle">Care that speaks your language</p>
+        </header>
+
+        <main>
+            <div class="symptom-section">
+                <h2 data-translate="select_symptoms">Select Your Symptoms</h2>
+                <p class="instruction" data-translate="select_symptoms_desc">Check all symptoms that apply to you:</p>
+                
+                <div class="symptoms-grid" id="symptomsGrid">
+                    {% for symptom in symptoms %}
+                    <label class="symptom-checkbox">
+                        <input type="checkbox" value="{{ symptom }}">
+                        <span class="checkmark"></span>
+                        <span class="symptom-name">{{ symptom }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+
+                <div class="button-group">
+                    <button id="predictBtn" class="btn-primary">
+                        <span class="icon icon-search"></span>
+                        <span data-translate="analyze_symptoms">Analyze Symptoms</span>
+                    </button>
+                    <button id="clearBtn" class="btn-secondary">
+                        <span class="icon icon-refresh"></span>
+                        <span data-translate="clear_all">Clear Selection</span>
+                    </button>
+                    <a href="/chatbot" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <span class="icon icon-chat"></span>
+                        <span data-translate="ai_chatbot">AI Chatbot</span>
+                    </a>
+                </div>
+            </div>
+
+            <div id="resultSection" class="result-section hidden">
+                <div class="result-card">
+                    <div class="result-header">
+                        <h2 data-translate="analysis_results">Analysis Results</h2>
+                        <span id="confidenceBadge" class="confidence-badge"></span>
+                    </div>
+                    
+                    <div class="prediction-main">
+                        <h3 id="predictedDisease" class="disease-name" data-english-name=""></h3>
+                        <p id="confidenceText" class="confidence-text"></p>
+                    </div>
+
+                    <div class="disease-details">
+                        <div class="detail-section">
+                            <h4><span class="icon icon-description"></span> <span data-translate="description">Description</span></h4>
+                            <p id="diseaseDescription" class="disease-description" data-english-desc=""></p>
+                        </div>
+
+                        <div class="detail-section">
+                            <h4><span class="icon icon-warning"></span> <span data-translate="severity">Severity Level</span></h4>
+                            <span id="severityLevel" class="severity-badge"></span>
+                        </div>
+
+                        <div class="detail-section">
+                            <h4><span class="icon icon-shield"></span> <span data-translate="precautions">Precautions</span></h4>
+                            <p id="precautions"></p>
+                        </div>
+
+                        <div class="detail-section">
+                            <h4><span class="icon icon-lightbulb"></span> <span data-translate="recommended_action">Recommended Action</span></h4>
+                            <p id="recommendedAction"></p>
+                        </div>
+                    </div>
+
+                    <div class="alternative-predictions">
+                        <h4 data-translate="alternative_possibilities">Other Possible Conditions</h4>
+                        <div id="alternativeList" class="alternative-list"></div>
+                    </div>
+
+                    <div class="disclaimer">
+                        <p><strong><span class="icon icon-alert"></span> Important Disclaimer:</strong> This prediction is for informational purposes only and should not be considered as medical advice. Always consult a qualified healthcare professional for proper diagnosis and treatment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="loadingSection" class="loading-section hidden">
+                <div class="spinner"></div>
+                <p>Analyzing your symptoms...</p>
+            </div>
+
+            <div class="info-section">
+                <h2>About This Tool</h2>
+                <p>This Health ML application uses machine learning to analyze symptoms and predict possible health conditions. It is trained on synthetic data for 7 common diseases:</p>
+                <ul class="disease-list">
+                    <li><span class="disease-tag mild"><span class="icon icon-severity-mild"></span> Common Cold</span></li>
+                    <li><span class="disease-tag moderate"><span class="icon icon-severity-moderate"></span> Flu</span></li>
+                    <li><span class="disease-tag moderate"><span class="icon icon-severity-moderate"></span> Migraine</span></li>
+                    <li><span class="disease-tag moderate"><span class="icon icon-severity-moderate"></span> Food Poisoning</span></li>
+                    <li><span class="disease-tag high"><span class="icon icon-severity-high"></span> COVID-19</span></li>
+                    <li><span class="disease-tag high"><span class="icon icon-severity-high"></span> Dengue</span></li>
+                    <li><span class="disease-tag high"><span class="icon icon-severity-high"></span> Malaria</span></li>
+                </ul>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 AyuMithra. Care that speaks your language.</p>
+        </footer>
+    </div>
+
+    <!-- AI Chatbot -->
+    <div id="chatbot-container" class="chatbot-container">
+        <!-- Chat Toggle Button -->
+        <button id="chatToggle" class="chat-toggle">
+            <span class="chat-icon-open">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            </span>
+            <span class="chat-icon-close hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </span>
+        </button>
+
+        <!-- Chat Window -->
+        <div id="chatWindow" class="chat-window hidden">
+            <div class="chat-header">
+                <div class="chat-header-info">
+                    <div class="chat-avatar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="22"></line>
+                        </svg>
+                    </div>
+                    <div class="chat-title">
+                        <h4 data-translate="chat_title">AyuMithra Assistant</h4>
+                        <span class="chat-status">
+                            <span class="status-dot"></span>
+                            Online
+                        </span>
+                    </div>
+                </div>
+                <div class="chat-language-selector">
+                    <select id="chatLanguage" class="language-select">
+                        <option value="en-US">English</option>
+                        <option value="hi-IN">Hindi</option>
+                        <option value="te-IN">Telugu</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="chatMessages" class="chat-messages">
+                <div class="chat-message bot-message welcome-message">
+                    <div class="message-content">
+                        <p data-translate="chat_welcome">Hello! I'm your AyuMithra health assistant. I can help you with health-related questions, understanding symptoms, and providing disease information. You can type or speak to me in English, Hindi, or Telugu!</p>
+                    </div>
+                    <button class="message-speak" data-message="hello-intro">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-typing hidden" id="chatTyping">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="chat-input-area">
+                <button id="voiceBtn" class="voice-btn" title="Voice input">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="22"></line>
+                    </svg>
+                </button>
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chatInput" placeholder="Type your health question..." autocomplete="off">
+                    <div id="voiceIndicator" class="voice-indicator hidden">
+                        <span class="voice-wave"></span>
+                        <span class="voice-wave"></span>
+                        <span class="voice-wave"></span>
+                        <span class="voice-wave"></span>
+                        <span class="voice-wave"></span>
+                    </div>
+                </div>
+                <button id="sendBtn" class="send-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/icons.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
