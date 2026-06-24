@@ -422,7 +422,7 @@ The prediction accuracy and statistical evaluation of the trained classifier are
 </center>
 
 #### 3.3 Database Relational Model Schema
-The relational layout of SQLite database `health_app.db` is illustrated in Fig 3.3, depicting the junction mapping table structure.
+The relational layout of SQLite database `health_app.db` is illustrated in Fig 3.3, depicting the junction mapping table structure along with the user authentication and chat history tables.
 
 ```text
    +------------------+
@@ -449,6 +449,16 @@ The relational layout of SQLite database `health_app.db` is illustrated in Fig 3
                                  | severity : TEXT    |
                                  | action   : TEXT    |
                                  +------------------+
+
+   +------------------+         +------------------+
+   |      USERS       |         |   CHAT_HISTORY   |
+   +------------------+         +------------------+
+   | id       : INT   |         | id        : INT  |
+   | username : TEXT  |<--------| username  : TEXT |
+   | password : TEXT  |         | role      : TEXT |
+   +------------------+         | content   : TEXT |
+                                | timestamp : DATETIME
+                                +------------------+
 ```
 <p align="center"><small>Fig 3.3 SQLite Relational Database Schema Model</small></p>
 
