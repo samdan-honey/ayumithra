@@ -749,10 +749,33 @@ def logout():
     return redirect(url_for('login'))
 
 def check_db_tables():
-    """Ensure all required tables (like chat_history) exist in the database"""
+    """Ensure all required tables (like users and chat_history) exist and are seeded in the database"""
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
+        
+        # 1. Create users table if not exists
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL UNIQUE,
+                password TEXT NOT NULL
+            )
+        ''')
+        
+        # 2. Seed default admin user if not exists
+        cursor.execute("SELECT * FROM users WHERE username = 'admin'")
+        admin_exists = cursor.fetchone()
+        if not admin_exists:
+            import hashlib
+            default_password_hash = hashlib.sha256(b"admin123").hexdigest()
+            cursor.execute('''
+                INSERT INTO users (username, password)
+                VALUES (?, ?)
+            ''', ('admin', default_password_hash))
+            print("[OK] Default admin user seeded")
+            
+        # 3. Create chat_history table if not exists
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS chat_history (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -765,7 +788,7 @@ def check_db_tables():
         ''')
         conn.commit()
         conn.close()
-        print("[OK] Chat history table verified/created")
+        print("[OK] Database tables verified/created")
     except Exception as e:
         print(f"[ERROR] Failed to verify/create tables: {e}")
 
